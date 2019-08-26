@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { Text, StyleSheet, TouchableHighlight, View, ScrollView, NativeModules, Picker } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { STATUS_BAR_HEIGHT } from '../utils/deviceInfo';
-import { Card } from 'react-native-shadow-cards';
 import BottomPicker from './components/bottom_modal';
-import Test from './test'
 const arr = [
     {
         month: '八月',
@@ -63,14 +61,13 @@ export default class Rumor extends React.Component {
         const { month_days_conatiner, current_month,current_year,year_arr,isBottomPickerVisible,isAnchor_point_click } = this.state;
         return (
             <LinearGradient colors={['#EBF0F7', '#E1ECF6', '#D7E9F4']} style={[styles.container, { paddingTop: STATUS_BAR_HEIGHT }]}>
-                <Card style={[styles.title_bar,{height:STATUS_BAR_HEIGHT+35,paddingTop:STATUS_BAR_HEIGHT}]} 
-                    cornerRadius={0} opacity={0.5} elevation={10}>
+                <View style={[styles.title_bar,{height:40+STATUS_BAR_HEIGHT,paddingTop:STATUS_BAR_HEIGHT}]} >
                     <View style={{ flex: 1, alignItems: "center", justifyContent: "center",position:"relative" }}>
                         <TouchableHighlight 
                             onPress={()=>this.props.navigation.goBack()}
                             underlayColor='transparent'
-                            style={{alignItems: "center", justifyContent: "center",position:"absolute",left:15 }}>
-                            <Text style={{ fontFamily: "iconfont", color: '#222424', fontSize: 24 }}>{'\ue682'}</Text>
+                            style={{alignItems: "center", justifyContent: "center",position:"absolute",left:0 }}>
+                            <Text style={{ fontFamily: "iconfont", color: '#222424', fontSize: 20 }}>{'\ue71a'}</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
                             onPress={()=> this.setState({isBottomPickerVisible:!this.state.isBottomPickerVisible})}
@@ -81,7 +78,7 @@ export default class Rumor extends React.Component {
                             </View>
                         </TouchableHighlight>
                     </View>
-                </Card>
+                </View>
                 <View style={{ flexDirection: "row", padding: 20,marginTop: STATUS_BAR_HEIGHT,paddingBottom:0}}>
                     <View style={styles.anchor_point_container}>
                         {
@@ -204,10 +201,12 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         width: '100%',
-        backgroundColor: '#D7E9F4',
+        backgroundColor: 'rgba(235,240,247,0.6)',
         left: 0,
         right: 0,
-        zIndex: 1
+        paddingLeft: 20,
+        paddingRight: 20,
+        zIndex: 1,
     },
     anchor_point_container: {
         width: 70,

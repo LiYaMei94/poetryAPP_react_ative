@@ -35,7 +35,9 @@ export default class bottom_modal extends React.Component {
         }
         return (
             <View style={[styles.container,optionStyle, { height: screen_height }]}>
-                <View style={[styles.bg,{width:screen_width}]}></View>
+                <TouchableHighlight underlayColor='transparent' onPress={()=>this.props.closeBottomPicker(false)} style={[styles.bg,{width:screen_width}]}>
+                    <Text></Text>
+                </TouchableHighlight>
                 <Animated.View style={[styles.bottom_picker,{height:bottom_picker_heigth}]}>
                     <View style={styles.picker_wrap}>
                     {

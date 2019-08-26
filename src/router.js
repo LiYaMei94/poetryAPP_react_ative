@@ -15,6 +15,9 @@ import Mine from './page/mine';
 import ArticleDetail from './page/article_detail';
 import RumorDetail from './page/rumor_detail';
 import ReadCalendar from './page/read_calendar';
+import ArticleCommentList from './page/article_comment_list';
+import AuroraMessage from './page/aurora_message';
+import MyHomepage from './page/my_homepage';
 import Test from './page/test';
 
 //底部tabbar的图标
@@ -87,41 +90,20 @@ const TabNavigator = createBottomTabNavigator(
 //创建全局导航器createStackNavigator
 export const router = createStackNavigator(
     {
-        bottomTabNavigator: {
-            screen: TabNavigator,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        ArticleDetail:{
-            screen: ArticleDetail,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        RumorDetail:{
-            screen: RumorDetail,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        ReadCalendar:{
-            screen: ReadCalendar,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        Test:{
-            screen: Test,
-            navigationOptions: {
-                header: null,
-            }
-        }
+        bottomTabNavigator: TabNavigator,
+        ArticleDetail:ArticleDetail,
+        RumorDetail:RumorDetail,
+        ReadCalendar:ReadCalendar,
+        ArticleCommentList:ArticleCommentList,
+        AuroraMessage:AuroraMessage,
+        MyHomepage:MyHomepage,
+        Test:Test,
     },
     {
         initialRouteName: "bottomTabNavigator",
         mode: 'modal',
         defaultNavigationOptions: {
+            header: null,
         },
     }
 )

@@ -1,4 +1,4 @@
-{
+export const dataObj={
     "八月":[
         {
             "gregorian_calendar": "8.09",

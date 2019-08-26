@@ -5,8 +5,17 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import android.os.Bundle;
 
+
+import java.lang.Override;
+import cn.jpush.android.api.JPushInterface;//极光推送
 public class MainActivity extends ReactActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        JPushInterface.init(this);//极光推送
+    }
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -26,4 +35,22 @@ public class MainActivity extends ReactActivity {
             }
         };
     }
+    //极光推送
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+    //极光推送
 }

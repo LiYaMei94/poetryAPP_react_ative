@@ -28,9 +28,7 @@ export default class App extends React.Component {
   }
   render() {
     return (
-      <Provider store={store}>
-        <AppContainer  />
-      </Provider>
+      <AppContainer  />
     );
   }
 }

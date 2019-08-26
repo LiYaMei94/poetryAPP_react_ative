@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { PanResponder, StyleSheet, View, Text, TouchableHighlight, Dimensions, Animated, Image, transform } from "react-native";
+import { PanResponder, StyleSheet, View, Text, TouchableHighlight, Dimensions, Animated } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { STATUS_BAR_HEIGHT } from '../utils/deviceInfo';
-import RumorList from './components/rumors_list';
 const screen_width = Dimensions.get('window').width;
 export default class ExploreScreen extends React.Component {
 
@@ -88,7 +87,6 @@ export default class ExploreScreen extends React.Component {
             horizontalscrollDistance: 0,//水平移动的距离
             VerticalscrollDistance: 0,//垂直移动的距离
             hiddenData: [],//已阅和喜欢的文章
-            thought_text_id:[],
         }
         this.hidden_click = this.hidden_click.bind(this);
     }
@@ -99,27 +97,21 @@ export default class ExploreScreen extends React.Component {
         this._panResponder = PanResponder.create({
             // 要求成为响应者：
             onStartShouldSetPanResponder: (evt, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-            onMoveShouldSetPanResponder: (evt, gestureState) => {
-                //解决PanResponder中的onPress无作用
-                //当大于5时才进入移动事件，前提是onStartShouldSetPanResponder和onStartShouldSetPanResponderCapture都是false
-                if(Math.abs(gestureState.dx) >5 ||Math.abs(gestureState.dy) >5){
-                    return true;
-                }else if(Math.abs(gestureState.dx) ==0 ||Math.abs(gestureState.dy) ==0){
-                    return false;
-                }
-            },
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
-            
-            },
+            onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+            onMoveShouldSetPanResponder: (evt, gestureState) => true,
+            onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
             onPanResponderGrant: (evt, gestureState) => {
-               
+                // 开始手势操作。给用户一些视觉反馈，让他们知道发生了什么事情！
+                //console.log('onPanResponderGrant')
+                //console.log(gestureState)
+                // gestureState.{x,y} 现在会被设置为0
             },
             onPanResponderStart: (evt, gestureState) => {
             },
             onPanResponderMove: (evt, gestureState) => {
-                
+                // 最近一次的移动距离为gestureState.move{X,Y}
+                //console.warn(gestureState.dx)
                 if (Math.abs(gestureState.dx) > 10 && this.state.skewYDeg < 5) {
                     this.state.skewYDeg = Math.abs(gestureState.dx) / 10;
                 } else if (this.state.skewYDeg > 5) {
@@ -141,8 +133,7 @@ export default class ExploreScreen extends React.Component {
                     horizontalscrollDistance: gestureState.dx,
                     VerticalscrollDistance: gestureState.dy,
                 })
-                this.Animated_hidden(false, false, true);
-                
+                this.Animated_hidden(false, false,true);
                 // 从成为响应者开始时的累计手势移动距离为gestureState.d{x,y}
             },
             onPanResponderTerminationRequest: (evt, gestureState) => true,
@@ -240,7 +231,7 @@ export default class ExploreScreen extends React.Component {
                 item.width = new Animated.Value(300);
                 item.height = new Animated.Value(370);
                 item.backgroundColor = '#ffffff';
-                item.opacity = 1
+                item.opacity=1
                 //item.opacity=new Animated.Value(1)
             } else if (index == 1) {
                 item.left = new Animated.Value((screen_width - 275) / 2);
@@ -248,14 +239,14 @@ export default class ExploreScreen extends React.Component {
                 item.height = new Animated.Value(380);
                 item.backgroundColor = 'rgba(248,251,249,0.5)';
                 //item.opacity=new Animated.Value(0.5)
-                item.opacity = 0.5
+                item.opacity=0.5
             } else {
                 item.left = new Animated.Value((screen_width - 255) / 2);
                 item.width = new Animated.Value(255);
                 item.height = new Animated.Value(390);
                 item.backgroundColor = 'rgba(236,245,239,0.5)';
                 //item.opacity=new Animated.Value(0.3)
-                item.opacity = 0.3
+                item.opacity=0.3
             }
         });
         this.setState({
@@ -263,79 +254,79 @@ export default class ExploreScreen extends React.Component {
         })
     }
     //滑动或者点击已阅喜欢时最上面的改变left，接下来的三个改变width和left
-    Animated_hidden(isLeft, isRefresh, isMove) {
+    Animated_hidden(isLeft,isRefresh,isMove) {
         //isLeft表示有页面向右或者向左隐藏
         //isRefresh是点击刷新页面回来，或者滑动了但是滑动的距离小页面不隐藏
         //isMove是手机还在滑动，触摸没结束
-
-        let value = [
+        
+        let value=[
             {
-                width: isRefresh ? 275 : 300,
-                height: isRefresh ? 380 : 370,
-                left: isRefresh ? ((screen_width - 275) / 2) : ((screen_width - 300) / 2),
-                opacity: isRefresh ? 0.5 : 1
+                width:isRefresh?275:300,
+                height:isRefresh?380:370,
+                left:isRefresh?((screen_width - 275) / 2):((screen_width - 300) / 2),
+                opacity:isRefresh?0.5:1
             },
             {
-                width: isRefresh ? 255 : 275,
-                height: isRefresh ? 390 : 380,
-                left: isRefresh ? ((screen_width - 255) / 2) : ((screen_width - 275) / 2),
-                opacity: isRefresh ? 0.3 : 0.5
+                width:isRefresh?255:275,
+                height:isRefresh?390:380,
+                left:isRefresh?((screen_width - 255) / 2):((screen_width - 275) / 2),
+                opacity:isRefresh?0.3:0.5
             },
             {
-                width: 255,
-                height: 390,
-                left: (screen_width - 255) / 2,
-                opacity: 0.3
+                width:255,
+                height:390,
+                left:(screen_width - 255) / 2,
+                opacity:0.3
             },
         ];
-        let leftValue = isLeft ? -330 : isRefresh ? (screen_width - 300) / 2 : 630;
-        let createAnimationArr = [];
+        let leftValue=isLeft?-330:isRefresh?(screen_width - 300) / 2:630;
+        let createAnimationArr=[];
         //true,false和true,true返回-330
         //false,true返回(screen_width - 300)
         //false,false返回630
-
-        if (this.state.data[this.state.month].length != 0) {
-            let length = this.state.data[this.state.month].length >= 4 ? 3 : this.state.data[this.state.month].length >= 3 ? 2 : this.state.data[this.state.month].length >= 2 ?
-                1 : 0;
-            let createAnimation1 = Animated.timing(
+        
+        if(this.state.data[this.state.month].length!=0){
+            let length=this.state.data[this.state.month].length>=4?3:this.state.data[this.state.month].length>=3?2:this.state.data[this.state.month].length>=2?
+            1:0;
+            let createAnimation1 =Animated.timing(
                 this.state.data[this.state.month][0].left,
                 {
                     toValue: leftValue,
                     duration: 700,
                 }
             );
-            if (isMove == undefined) {
+            if(isMove==undefined){
                 createAnimationArr.push(createAnimation1);
             }
-            for (var i = 0; i < length; i++) {
+            for(var i=0;i<length;i++){
                 createAnimationArr.push(Animated.timing(
-                    this.state.data[this.state.month][i + 1].left,
+                    this.state.data[this.state.month][i+1].left,
                     {
                         toValue: value[i].left,
                     }
                 ))
                 createAnimationArr.push(Animated.timing(
-                    this.state.data[this.state.month][i + 1].width,
+                    this.state.data[this.state.month][i+1].width,
                     {
                         toValue: value[i].width,
                     }
                 ))
                 createAnimationArr.push(Animated.timing(
-                    this.state.data[this.state.month][i + 1].height,
+                    this.state.data[this.state.month][i+1].height,
                     {
                         toValue: value[i].height,
                     }
                 ))
-                this.state.data[this.state.month][i + 1].opacity = value[i].opacity
-
+                this.state.data[this.state.month][i+1].opacity=value[i].opacity
+                
             }
             Animated.parallel(createAnimationArr).start();
             this.setState({
-                data: this.state.data
+                data:this.state.data
             })
         }
     }
-
+    
     //文章已阅或者喜欢
     hidden_click(isLeft, leftValue, duration) {
         if (this.state.data[this.state.month].length != 0) {
@@ -345,7 +336,7 @@ export default class ExploreScreen extends React.Component {
                     isShowLogo: true
                 })
             }
-            this.Animated_hidden(isLeft, false);
+            this.Animated_hidden(isLeft,false);
             this.timer2 = setTimeout(() => {
                 this.setState({
                     isLeft: false,
@@ -390,8 +381,8 @@ export default class ExploreScreen extends React.Component {
         let temp = [];
         if (hiddenData.length != 0) {
             data[month].unshift(hiddenData[hiddenData.length - 1]);
-            this.setState({ data: data }, () => {
-                this.Animated_hidden(false, true);
+            this.setState({data:data}, ()=> {
+                this.Animated_hidden(false,true);
             });
             this.timer1 = setTimeout(() => {
                 for (var i = 0; i < hiddenData.length; i++) {
@@ -421,10 +412,10 @@ export default class ExploreScreen extends React.Component {
                             <Animated.View key={index}
                                 style={[styles.list_item,
                                 {
-                                    backgroundColor: 'rgba(255,255,255,' + item.opacity + ')',
+                                    backgroundColor: 'rgba(255,255,255,'+item.opacity+')',
                                     height: item.height,
                                     width: item.width,
-                                    zIndex: index == 0 ? 4 : index == 1 ? 3 : index == 2 ? 2 : 1,
+                                    zIndex: index == 0 ? 4 : index == 1 ? 3 :index==2?2:1,
                                     transform: index == 0 ? [
                                         { skewY: skewYDeg + 'deg' },
                                         { translateX: horizontalscrollDistance },
@@ -438,14 +429,42 @@ export default class ExploreScreen extends React.Component {
                                 shadowOpacity={0.5}
                                 shadowRadius={5}
                             >
-                                <View style={{ width: 275, backgroundColor: '#fff', paddingTop: 20, borderRadius: 10, paddingLeft: 12.5, paddingRight: 12.5 }} {...this._panResponder.panHandlers}>
+                                <View style={{ width:275, backgroundColor: '#fff', paddingTop: 20, borderRadius: 10,paddingLeft:12.5,paddingRight:12.5}} {...this._panResponder.panHandlers}>
                                     {
                                         this.showLogo(index)
                                     }
-                                    <RumorList  
-                                        navigation={this.props.navigation}
-                                    ></RumorList>
+                                    <Text style={styles.article_title}>{item.article.title}</Text>
+                                    <Text style={styles.article_author}>{item.article.author}</Text>
+                                    <Text style={styles.article_content}>
+                                        {
+                                            item.article.content.map((item, index) => {
+                                                return (
+                                                    <Text key={index} style={styles.article_p}>{item}</Text>
+                                                )
+                                            })
+                                        }
+                                    </Text>
+                                    <View style={[styles.article_bottom]}>
+                                        <LinearGradient locations={[0.15, 0.75, 1]} colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.95)']}
+                                            style={{ height: 130 }}></LinearGradient>
+                                        <View style={{ backgroundColor: "#fff", flex: 1, paddingTop: 0, flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={{ flex: 1, color: '#888' }}>208喜欢•143想法</Text>
+                                        </View>
+                                    </View>
                                 </View>
+                                <TouchableHighlight
+                                    onPress={() => {
+                                        this.props.navigation.push('ArticleDetail', { id: index })
+                                    }}
+                                    underlayColor='#C39F67'
+                                    style={{
+                                        width: 50, height: 25, borderRadius: 15, backgroundColor: '#C39F67',
+                                        alignItems: 'center', justifyContent: "center", position: "absolute", right: 20,
+                                        bottom: index == 0 ? 25 : index == 1 ? 25 : 30
+                                    }}
+                                >
+                                    <Text style={{ color: 'white' }}>阅读</Text>
+                                </TouchableHighlight>
                             </Animated.View>
                         )
                     })
@@ -453,6 +472,7 @@ export default class ExploreScreen extends React.Component {
             </View>
         )
     }
+
     render() {
         return (
             <LinearGradient colors={['#EBF0F7', '#E1ECF6', '#D7E9F4']} style={[styles.container, { paddingTop: STATUS_BAR_HEIGHT }]}>
@@ -463,7 +483,7 @@ export default class ExploreScreen extends React.Component {
                             underlayColor='rgba(0,0,0,0.5)'
                             onPress={this.refresh_click.bind(this)}
                             style={styles.handle_item}>
-                            <MaterialIcons name='refresh' size={25} color='#D4E5F0'></MaterialIcons>
+                            <MaterialIcons name='refresh' size={25} color='#DBEDE2'></MaterialIcons>
                         </TouchableHighlight>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: "center", alignItems: 'center', }}>
@@ -471,7 +491,7 @@ export default class ExploreScreen extends React.Component {
                             underlayColor='rgba(0,0,0,0.5)'
                             onPress={() => this.hidden_click(true, -330, 500)}
                             style={[styles.handle_item, { width: 50, height: 50 }]}>
-                            <MaterialIcons name='close' size={35} color='#D4E5F0'></MaterialIcons>
+                            <MaterialIcons name='close' size={35} color='#DBEDE2'></MaterialIcons>
                         </TouchableHighlight>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: "center", alignItems: 'center', }}>
@@ -479,7 +499,7 @@ export default class ExploreScreen extends React.Component {
                             underlayColor='rgba(0,0,0,0.5)'
                             onPress={() => this.hidden_click(false, 630, 1000)}
                             style={styles.handle_item}>
-                            <AntDesign name='hearto' size={20} color='#D4E5F0'></AntDesign>
+                            <AntDesign name='hearto' size={20} color='#DBEDE2'></AntDesign>
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -495,6 +515,7 @@ var styles = StyleSheet.create({
     list_wrap: {
         marginTop: 80,
         flexDirection: 'row',
+        //justifyContent: "center",
         position: "relative"
     },
     list_item: {
@@ -503,7 +524,39 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "center",
         position: "absolute",
-
+        
+    },
+    article_title: {
+        textAlign: "center",
+        width: '100%',
+        color: '#262626',
+        fontSize: 24,
+        marginBottom: 5,
+    },
+    article_author: {
+        textAlign: "center",
+        width: '100%',
+        color: "#A6A6A6",
+        fontSize: 14
+    },
+    article_content: {
+        paddingTop: 10,
+        height: 260,
+    },
+    article_p: {
+        marginBottom: 20,
+        fontSize: 16,
+        lineHeight: 26,
+        textAlign: "center"
+    },
+    article_bottom: {
+        position: "absolute",
+        right: 0,
+        left: 0,
+        bottom: 0,
+        height: 170,
+        flexDirection: 'column',
+        flex: 1
     },
     have_read_logo: {
         borderColor: '#D7BF9B',
@@ -517,8 +570,7 @@ var styles = StyleSheet.create({
         top: 20,
         right: 20,
         color: '#D7BF9B',
-        transform: [{ skewY: '15deg' }],
-        zIndex:2
+        transform: [{ skewY: '15deg' }]
     },
     like_logo: {
         borderColor: '#EC4855',
@@ -532,8 +584,7 @@ var styles = StyleSheet.create({
         top: 20,
         left: 20,
         color: '#EC4855',
-        transform: [{ skewY: '-15deg' }],
-        zIndex:2
+        transform: [{ skewY: '-15deg' }]
     },
     handle_conatiner: {
         flexDirection: 'row',

@@ -7,14 +7,14 @@ export default class Loading extends React.Component {
   static defaultProps={
       showSpinner:true,
       spinkerSize:40,
-      spinkerType:'Circle',
+      spinkerType:'Wave',
       spinkerColor:'#ffffff'
   }
   render() {
     return (
-      <View  style={[styles.container, { paddingTop: STATUS_BAR_HEIGHT }]}>
+      <LinearGradient  colors={['#EBF0F7', '#E1ECF6', '#D7E9F4']} style={[styles.container, { paddingTop: STATUS_BAR_HEIGHT }]}>
          <Spinkiter isVisible={this.props.showSpinner} size={this.props.spinkerSize} type={this.props.spinkerType} color={this.props.spinkerColor}/>
-      </View>
+      </LinearGradient>
     );
   }
 }
@@ -36,7 +36,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems:'center',
     justifyContent:"center",
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    paddingBottom:100
   }
 });

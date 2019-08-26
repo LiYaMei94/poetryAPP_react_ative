@@ -1,28 +1,48 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, TouchableHighlight, View,ScrollView,NativeModules, UIManager, } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { STATUS_BAR_HEIGHT } from '../utils/deviceInfo';
-
-export default class Rumor extends React.Component {
-  constructor(props){
+import {
+  Text,
+View,
+TextInput,
+TouchableHighlight,
+PropTypes,
+requireNativeComponent,
+NativeModules,
+ScrollView,
+StyleSheet,
+DeviceEventEmitter,
+} from 'react-native';
+export default class IdeaViewshoot extends React.Component {
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       
-    }
+    };
+
   }
+
+  componentWillMount() { }
+
+  componentDidMount() {
+    
+  }
+
   
+
   render() {
     return (
-      <LinearGradient colors={['#EBF0F7', '#E1ECF6', '#D7E9F4']} style={[styles.container]}>
-          
-      </LinearGradient>
-    );
+      <ScrollView style={styles.parent}>
+
+        
+      </ScrollView>
+
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  parent: {
+    backgroundColor: '#f0f1f3'
   },
+
   
 });

@@ -34,16 +34,19 @@ export default class Mine extends React.Component {
             <Text style={styles.mine_nickname}>辣辣的草莓酱</Text>
             <Text style={styles.mine_like}>获得 0 喜欢 • 已加入 8 天</Text>
           </View>
-          <View style={styles.mine_top_right}>
+          <TouchableHighlight style={styles.mine_top_right}
+            underlayColor='transparent'
+            onPress={()=>this.props.navigation.push('MyHomepage')}
+          >
             {
               isHeaderImg ?
                 <Image style={styles.user_header_img} source={require('../assets/images/header.jpg')}></Image>
                 : <Text style={[styles.iconStyle]}>{'\ue644'}</Text>
             }
-          </View>
+          </TouchableHighlight>
         </View>
         <Animated.View style={[styles.mine_content_wrap, { bottom: mine_content_wrap_bottom }]}>
-          <TouchableHighlight style={styles.mine_content_line} onPress={this._onPressButton} underlayColor='white'>
+          <TouchableHighlight style={styles.mine_content_line} onPress={()=>this.props.navigation.push('MyHomepage')} underlayColor='white'>
             <View style={styles.mine_content_line_wrap}>
               <Text style={[styles.iconStyle,styles.mine_content_line_icon]}>{'\ue644'}</Text>
               <Text style={styles.mine_content_line_text}>我的主页</Text>
@@ -53,6 +56,18 @@ export default class Mine extends React.Component {
             <View style={styles.mine_content_line_wrap}>
               <Text style={[styles.iconStyle,styles.mine_content_line_icon]}>{'\ue643'}</Text>
               <Text style={styles.mine_content_line_text}>喜欢的想法</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.mine_content_line} onPress={()=>this.props.navigation.push('ReadCalendar')} underlayColor='white'>
+            <View style={styles.mine_content_line_wrap}>
+              <Text style={[styles.iconStyle,styles.mine_content_line_icon]}>{'\ue685'}</Text>
+              <Text style={styles.mine_content_line_text}>阅读日历</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.mine_content_line} onPress={()=>this.props.navigation.push('AuroraMessage')} underlayColor='white'>
+            <View style={styles.mine_content_line_wrap}>
+              <Text style={[styles.iconStyle,styles.mine_content_line_icon]}>{'\ue634'}</Text>
+              <Text style={styles.mine_content_line_text}>消息通知</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight style={styles.mine_content_line} onPress={this._onPressButton} underlayColor='white'>

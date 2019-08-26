@@ -9,8 +9,10 @@ import { STATUS_BAR_HEIGHT } from '../utils/deviceInfo';
 import { getData } from '../fetch';
 import Comment_modal from './components/comment_modal';
 import Loading from './components/loading';
-import Bottom_Picker from './components/bottom_modal'
-export default class Rumor extends React.Component {
+import Bottom_Picker from './components/bottom_modal';
+//import ShareUtil from '../libs/ShareUtil';
+import {dataObj} from '../utils/data'
+export default class ArtilceDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,18 +31,16 @@ export default class Rumor extends React.Component {
   }
   //获取文章数据
   get_article_data() {
-    getData('http://localhost:8081/src/utils/data.json').then(res => {
-      var article_name_length = this.strLength(res[this.state.month][this.state.article_id].article[0].title);
-      res[this.state.month].map((item, index) => {
+    var article_name_length = this.strLength(dataObj[this.state.month][this.state.article_id].article[0].title);
+    dataObj[this.state.month].map((item, index) => {
         item.header_show = false;
       })
       this.setState({
-        article_arr: res[this.state.month],
+        article_arr: dataObj[this.state.month],
         article_name_length: article_name_length,
         article_id: this.state.article_id,//这里要修改
         isLoad: false
       })
-    })
   }
   strLength(text) {
     var result = text.match(/[\s\S]/gu);
@@ -60,6 +60,19 @@ export default class Rumor extends React.Component {
     this.setState({
       isComment_moda: isComment_moda,
       article_arr: article_arr
+    })
+  }
+  articleShare(){
+    var list = [0,1,2,3,4,7,8];//0:qq,1:新浪, 2:微信, 3:微信朋友圈,4:qq空间, 7:Facebook, 8:Twitter  
+    /*ShareUtil.shareboard('sssss','http://dev.umeng.com/images/tab2_1.png','http://www.umeng.com/','title',list,(code,message) =>{
+        this.setState({result:message});
+
+    });*/
+  }
+  
+  closeBottomPicker(state){
+    this.setState({
+      isComment_moda:false
     })
   }
   //点赞
@@ -138,7 +151,7 @@ export default class Rumor extends React.Component {
                         <TouchableHighlight
                           underlayColor='#E0E0E0'
                           activeOpacity={1}
-                          onPress={() => { }}
+                          onPress={() =>this.props.navigation.push('MyHomepage')}
                           style={styles.head_portrait}
                         >
                           <Text style={[styles.iconStyle, { fontSize: 22, color: '#9D9D9D' }]}>{'\ue644'}</Text>
@@ -157,25 +170,30 @@ export default class Rumor extends React.Component {
                         {
                           item.article[0].comments.map((c_item, c_index) => {
                             return (
-                              <View style={styles.comment_item} key={c_index}>
-                                <View style={styles.publish_comment}>
-                                  <TouchableHighlight
-                                    underlayColor='#E0E0E0'
-                                    activeOpacity={1}
-                                    onPress={() => { }}
-                                    style={styles.head_portrait}
-                                  >
-                                    {
-                                      //{uri:c_item.header_img}
-                                      c_item.header_img != '' ?
-                                        <Image style={{ width: '100%', height: '100%', borderRadius: 50 }} source={require('../assets/images/header.jpg')}></Image>
-                                        : <Text style={[styles.iconStyle, { fontSize: 24, color: '#9D9D9D' }]}>{'\ue644'}</Text>
-                                    }
-                                  </TouchableHighlight>
-                                  <Text style={[styles.add_comment_button, { fontSize: 15, marginLeft: 15 }]}>{c_item.nickname}</Text>
+                              <TouchableHighlight
+                                underlayColor='transparent' key={c_index}
+                                onPress={()=>this.props.navigation.push('RumorDetail')}
+                              >
+                                <View style={styles.comment_item} >
+                                  <View style={styles.publish_comment}>
+                                    <TouchableHighlight
+                                      underlayColor='#E0E0E0'
+                                      activeOpacity={1}
+                                      onPress={() => this.props.navigation.push('MyHomepage')}
+                                      style={styles.head_portrait}
+                                    >
+                                      {
+                                        //{uri:c_item.header_img}
+                                        c_item.header_img != '' ?
+                                          <Image style={{ width: '100%', height: '100%', borderRadius: 50 }} source={require('../assets/images/header.jpg')}></Image>
+                                          : <Text style={[styles.iconStyle, { fontSize: 24, color: '#9D9D9D' }]}>{'\ue644'}</Text>
+                                      }
+                                    </TouchableHighlight>
+                                    <Text style={[styles.add_comment_button, { fontSize: 15, marginLeft: 15 }]}>{c_item.nickname}</Text>
+                                  </View>
+                                  <Text style={styles.comment_text}>{c_item.comment_text}</Text>
                                 </View>
-                                <Text style={styles.comment_text}>{c_item.comment_text}</Text>
-                              </View>
+                              </TouchableHighlight>
                             )
                           })
                         }
@@ -183,7 +201,7 @@ export default class Rumor extends React.Component {
                       <TouchableHighlight
                         underlayColor='#ffffff'
                         activeOpacity={1}
-                        onPress={() => { }}
+                        onPress={() => this.props.navigation.push('ArticleCommentList',{})}
                       >
                         <Text style={{ color: '#C6A46E', fontSize: 13, marginTop: 25 }}>全部263条想法</Text>
                       </TouchableHighlight>
@@ -204,7 +222,7 @@ export default class Rumor extends React.Component {
                       <TouchableHighlight
                         underlayColor='#ffffff'
                         activeOpacity={1}
-                        onPress={() => { }}
+                        onPress={() => this.props.navigation.push('ArticleCommentList',{})}
                         style={{ marginLeft: 20 }}
                       >
                         <View style={styles.article_give_like}>
@@ -216,7 +234,7 @@ export default class Rumor extends React.Component {
                     <TouchableHighlight
                       underlayColor='#ffffff'
                       activeOpacity={1}
-                      onPress={() => { alert('分享暂未做') }}
+                      onPress={this.articleShare.bind(this)}
                       style={{ width: 50, flexDirection: 'row', alignItems: 'center', justifyContent: "flex-end" }}
                     >
                       <Text style={[styles.iconStyle, { fontSize: 18, color: '#262626' }]}>{'\ue602'}</Text>
@@ -230,13 +248,9 @@ export default class Rumor extends React.Component {
         {
           isComment_moda ? <Comment_modal _setComment_moda={this._setComment_moda.bind(this)} ></Comment_modal> : null
         }
+        
       </View>
     );
-  }
-  closeBottomPicker(state){
-    this.setState({
-      isComment_moda:false
-    })
   }
 }
 const styles = StyleSheet.create({
