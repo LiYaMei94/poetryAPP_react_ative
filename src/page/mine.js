@@ -8,7 +8,8 @@ export default class Mine extends React.Component {
     super(props);
     this.state = {
       isHeaderImg: true,
-      mine_content_wrap_bottom: new Animated.Value(30)
+      mine_content_wrap_bottom: new Animated.Value(30),
+      isLofin:false
     }
   }
   componentDidMount() {
@@ -26,20 +27,30 @@ export default class Mine extends React.Component {
   }
 
   render() {
-    const { isHeaderImg, mine_content_wrap_bottom } = this.state;
+    const { isHeaderImg, mine_content_wrap_bottom,isLofin } = this.state;
     return (
       <LinearGradient colors={['#EBF0F7', '#E1ECF6', '#D7E9F4']} style={[styles.container, { paddingTop: STATUS_BAR_HEIGHT }]}>
         <View style={styles.mine_top}>
-          <View style={styles.mine_top_left}>
-            <Text style={styles.mine_nickname}>辣辣的草莓酱</Text>
-            <Text style={styles.mine_like}>获得 0 喜欢 • 已加入 8 天</Text>
-          </View>
+          {
+            isLofin?
+            <View style={styles.mine_top_left}>
+              <Text style={styles.mine_nickname}>辣辣的草莓酱</Text>
+              <Text style={styles.mine_like}>获得 0 喜欢 • 已加入 8 天</Text>
+            </View>:
+            <TouchableHighlight
+              underlayColor='transparent'
+              onPress={()=>this.props.navigation.push('Login')}
+              style={[styles.mine_top_left,{justifyContent: "center",}]}
+            >
+              <Text style={[styles.mine_nickname]}>去登录</Text>
+            </TouchableHighlight>
+          }
           <TouchableHighlight style={styles.mine_top_right}
             underlayColor='transparent'
             onPress={()=>this.props.navigation.push('MyHomepage')}
           >
             {
-              isHeaderImg ?
+              isLofin ?
                 <Image style={styles.user_header_img} source={require('../assets/images/header.jpg')}></Image>
                 : <Text style={[styles.iconStyle]}>{'\ue644'}</Text>
             }

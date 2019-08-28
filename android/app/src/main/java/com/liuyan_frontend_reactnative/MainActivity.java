@@ -10,13 +10,25 @@ import android.os.Bundle;
 
 import java.lang.Override;
 import cn.jpush.android.api.JPushInterface;//极光推送
+
+//友盟
+import android.os.Bundle;
+import com.umeng.socialize.UMShareAPI;
+import com.liuyan_frontend_reactnative.umeng.ShareModule;
+import android.content.Intent;
 public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         JPushInterface.init(this);//极光推送
+        ShareModule.initSocialSDK(this);//友盟
     }
-
+    //友盟
+    @Override
+        public void onActivityResult(int requestCode,int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
     /**
      * Returns the name of the main component registered from JavaScript.
      * This is used to schedule rendering of the component.

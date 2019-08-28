@@ -10,7 +10,7 @@ import { getData } from '../fetch';
 import Comment_modal from './components/comment_modal';
 import Loading from './components/loading';
 import Bottom_Picker from './components/bottom_modal';
-//import ShareUtil from '../libs/ShareUtil';
+import ShareUtil from '../../libs/ShareUtil';
 import {dataObj} from '../utils/data'
 export default class ArtilceDetail extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ export default class ArtilceDetail extends React.Component {
       article_comments_pageY: {},
       isComment_moda: false,//想法的弹窗是否出现
       isLoad: true,//数据获取成功才显示页面
+      artilce_name_date_container_pageY:[]
     }
   }
   componentDidMount() {
@@ -64,10 +65,9 @@ export default class ArtilceDetail extends React.Component {
   }
   articleShare(){
     var list = [0,1,2,3,4,7,8];//0:qq,1:新浪, 2:微信, 3:微信朋友圈,4:qq空间, 7:Facebook, 8:Twitter  
-    /*ShareUtil.shareboard('sssss','http://dev.umeng.com/images/tab2_1.png','http://www.umeng.com/','title',list,(code,message) =>{
-        this.setState({result:message});
-
-    });*/
+    ShareUtil.shareboard('sssss','http://dev.umeng.com/images/tab2_1.png','http://www.umeng.com/','title',list,(code,message) =>{
+        console.warn(message)
+    });
   }
   
   closeBottomPicker(state){
@@ -86,7 +86,7 @@ export default class ArtilceDetail extends React.Component {
   }
 
   render() {
-    const { article_id, article_arr, article_name_length, isComment_moda, isLoad } = this.state;
+    const { article_id, article_arr, article_name_length, isComment_moda, isLoad,artilce_name_date_container_pageY } = this.state;
     if (isLoad) {
       return <Loading></Loading>
     }
@@ -125,6 +125,7 @@ export default class ArtilceDetail extends React.Component {
                   <ScrollView showsVerticalScrollIndicator={false} style={styles.artilce_container}
                     onScroll={(event) => {
                       if (event.nativeEvent.contentOffset.y > article_name_length * 24 + (18 + STATUS_BAR_HEIGHT)) {
+                      //if (event.nativeEvent.contentOffset.y > artilce_name_date_container_pageY[article_id]+STATUS_BAR_HEIGHT) {
                         article_arr[article_id].header_show = true;
                       } else {
                         article_arr[article_id].header_show = false;
@@ -134,7 +135,19 @@ export default class ArtilceDetail extends React.Component {
                       })
                     }}
                   >
-                    <View style={styles.artilce_name_date_container} >
+                    <View style={styles.artilce_name_date_container} 
+                      onLayout={(e)=>{
+                        NativeModules.UIManager.measure(e.target, (x, y, width, height, pageX, pageY)=>{
+                          this.state.artilce_name_date_container_pageY.push(pageY)
+                          this.setState({
+                            artilce_name_date_container_pageY:this.state.artilce_name_date_container_pageY
+                          },()=>{
+                            //console.warn(this.state.artilce_name_date_container_pageY)
+                          })
+                          
+                        })
+                      }}
+                    >
                       <Text style={styles.artilce_content_date}>{item.gregorian_calendar_text}</Text>
                       <Text style={styles.artilce_content_name}>{item.article[0].title}</Text>
                     </View>

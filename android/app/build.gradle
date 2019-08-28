@@ -121,6 +121,14 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
+    //友盟
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+
+    }
+    
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds

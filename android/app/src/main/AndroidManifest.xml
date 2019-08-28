@@ -2,7 +2,22 @@
   package="com.liuyan_frontend_reactnative">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 友盟权限开始 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- QQ、QQ空间所需权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <!-- QQ纯图分享或避免其它平台纯图分享的时候图片不被压缩 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>   
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- 友盟权限结束 -->
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
@@ -25,6 +40,81 @@
       <meta-data android:name="JPUSH_CHANNEL" android:value="${APP_CHANNEL}"/>
       <meta-data android:name="JPUSH_APPKEY" android:value="${JPUSH_APPKEY}"/>
       <!-- 极光推送 -->
+
+      <!-- 友盟开始 -->
+      <!-- 微信 -->
+      <activity 
+        android:name=".wxapi.WXEntryActivity" 
+        android:configChanges="keyboardHidden|orientation|screenSize" 
+        android:exported="true" 
+        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+      <!-- qq -->
+        <activity
+          android:name="com.tencent.tauth.AuthActivity"
+          android:launchMode="singleTask"
+          android:noHistory="true" >
+          <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="tencent101773792" />
+          </intent-filter>
+        </activity>
+        <activity
+        android:name="com.tencent.connect.common.AssistActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <!-- 新浪 -->
+        <activity
+          android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+          android:configChanges="keyboardHidden|orientation"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar"
+          android:exported="false"
+          >
+        </activity>
+        <activity 
+          android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+          android:configChanges="keyboardHidden|orientation"
+          android:exported="false"
+          android:windowSoftInputMode="adjustResize"
+        >
+        </activity>
+        <activity
+          android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+          android:launchMode="singleTask"
+          android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+          <intent-filter>
+              <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+              <category android:name="android.intent.category.DEFAULT" />
+          </intent-filter>
+        </activity>
+        <!-- facebook -->
+        <activity
+          android:name="com.umeng.facebook.FacebookActivity"
+          android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"  
+          android:label="@string/app_name"  
+          android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+          <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+            <!-- 其中 @string/facebook_app_id 是facebook的appid
+            这里需要注意，appid一定要存在string文件中，并以facebook_app_id名字进行保存。 -->
+        <!-- Twitter -->
+        <activity
+          android:name="com.umeng.socialize.handler.TwitterWebActivity"
+          android:configChanges=
+          "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar"
+          android:label="@string/app_name" />
+        <!-- 分享编辑页(只有豆瓣，人人，腾讯微博，领英，twitter需要) -->
+        <activity
+          android:name="com.umeng.socialize.editorpage.ShareActivity"
+          android:theme="@android:style/Theme.NoTitleBar"
+          android:excludeFromRecents="true"
+          />
+        <!--value的值填写你在友盟后台申请的应用Appkey-->
+        <meta-data android:value="5d5bb17a570df3aa260003e2" android:name="UMENG_APPKEY"/>
+      <!-- 友盟结束 -->
     </application>
 
 </manifest>

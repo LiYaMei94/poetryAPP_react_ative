@@ -18,6 +18,7 @@ import ReadCalendar from './page/read_calendar';
 import ArticleCommentList from './page/article_comment_list';
 import AuroraMessage from './page/aurora_message';
 import MyHomepage from './page/my_homepage';
+import Login from './page/login';
 import Test from './page/test';
 
 //底部tabbar的图标
@@ -97,6 +98,7 @@ export const router = createStackNavigator(
         ArticleCommentList:ArticleCommentList,
         AuroraMessage:AuroraMessage,
         MyHomepage:MyHomepage,
+        Login:Login,
         Test:Test,
     },
     {
